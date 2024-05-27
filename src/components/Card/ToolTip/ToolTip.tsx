@@ -1,18 +1,14 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 
 import styles from "./tooltip.module.scss";
 
 interface Props {
   isVisible: boolean;
+  text: string;
 }
 
-function ToolTip({ isVisible }: Props): ReactElement {
-  return (
-    <>
-      <h2>Сложение чисел</h2>
-      <h3>очень много какого-то текста вообще не знаю что сюда писать</h3>
-    </>
-  );
+function ToolTip({ text = "" }: Props): ReactElement {
+  return <div className={styles.container}>{text}</div>;
 }
 
 export default ToolTip;

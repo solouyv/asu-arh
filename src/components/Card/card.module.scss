@@ -1,4 +1,4 @@
-@use "../../styles/vars.scss" as vars;
+@use "../../styles//vars.scss" as vars;
 
 .container {
   display: flex;
@@ -10,7 +10,7 @@
   border-radius: 10px;
   width: 150px;
   height: 150px;
-  padding: 30px;
+  padding: 35px;
   text-align: center;
   cursor: pointer;
   -webkit-user-select: none;

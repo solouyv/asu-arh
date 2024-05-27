@@ -6,7 +6,15 @@ export default defineConfig({
   html: { template: "./public/index.html" },
   source: {
     alias: {
-      "@interfaces/*": "./src/interfaces/*",
+      "@assets/*": ["./src/assets/*"],
+      "@components/*": ["./src/components/*"],
+      "@context/*": ["./src/context/*"],
+      "@enums/*": ["./src/enums/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@interfaces/*": ["./src/interfaces/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@router/*": ["./src/router/*"],
+      "@scripts/*": ["./src/scripts/*"],
     },
   },
 });

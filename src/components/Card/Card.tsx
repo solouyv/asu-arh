@@ -1,13 +1,14 @@
-import React, { ReactElement, useState } from "react";
+import { ReactElement, useState } from "react";
 
 import ToolTip from "./ToolTip/ToolTip";
 import styles from "./card.module.scss";
 
 interface Props {
   title: string;
+  toolTipText?: string;
 }
 
-function Card({ title = "" }: Props): ReactElement {
+function Card({ title = "", toolTipText = "" }: Props): ReactElement {
   const [showToolTip, setShowTooltip] = useState<boolean>(false);
 
   function switchShow() {
@@ -20,7 +21,7 @@ function Card({ title = "" }: Props): ReactElement {
       onMouseEnter={switchShow}
       onMouseLeave={switchShow}
     >
-      <ToolTip isVisible={showToolTip} />
+      {toolTipText && <ToolTip isVisible={showToolTip} text={toolTipText} />}
       <h2>{title}</h2>
     </div>
   );

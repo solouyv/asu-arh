@@ -10,16 +10,15 @@
   justify-content: center;
   width: 100%;
 
-  @media (max-width: 767px) {
+  @media (max-width: 500px) and (max-height: 824px) {
     position: relative;
-    top: 0;
-    bottom: 0;
-    padding: 15px;
+    top: 20px;
+    left: 0;
   }
+
   .container {
     display: grid;
     align-items: center;
-    overflow-y: auto;
     color: vars.$text_color;
     border-radius: vars.$border-radius;
     background-color: vars.$bg_color;
@@ -33,7 +32,14 @@
     gap: 15px;
 
     @media (max-width: 375px) {
-      height: 200px;
+      height: 450px;
+      padding: 15px;
+      gap: 5px;
+      margin-top: 100px;
+    }
+
+    @media (max-width: 600px) {
+      width: 300px;
     }
 
     h1 {
@@ -45,6 +51,12 @@
       grid-template-rows: 1fr;
       grid-template-columns: 40% 50%;
       align-items: center;
+
+      @media (max-width: 600px) {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
 
       label {
         grid-column-start: 1;
@@ -66,6 +78,12 @@
       grid-template-rows: 1fr;
       grid-template-columns: 40% 50%;
       align-items: center;
+
+      @media (max-width: 600px) {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
 
       label {
         grid-column-start: 1;

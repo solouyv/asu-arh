@@ -13,6 +13,7 @@ export default function Button({
   id = "",
   disabled = false,
   size = ButtonSizes.Medium,
+  circle = false,
 }: IProps): ReactElement {
   function handleClick() {
     onClickFunction();
@@ -26,6 +27,7 @@ export default function Button({
         styles.button,
         rounded ? styles.rounded : null,
         styles[size],
+        circle ? styles.circle : null,
       )}
       onClick={handleClick}
     >

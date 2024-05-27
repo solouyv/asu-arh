@@ -14,7 +14,7 @@ function Header(): ReactElement {
         </Link>
       </div>
       <div className={styles.wrapper}>
-        <h1>Виртуальная лаборатория</h1>
+        <h1>Виртуальная лаборатория "Архитектура ЭВМ"</h1>
       </div>
     </header>
   );

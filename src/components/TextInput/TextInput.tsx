@@ -1,26 +1,29 @@
-import React, { ChangeEvent, ChangeEventHandler, useState } from "react";
+import { ReactElement } from "react";
 
+import classNames from "classnames";
+
+import { IProps } from "./IProps";
 import styles from "./textinput.module.scss";
-
-interface Props {
-  placeholder: string;
-  onTextChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  autoComplete: boolean;
-}
 
 function TextInput({
   placeholder = "Введите данные",
   onTextChange,
   autoComplete = false,
-}: Props) {
+  hasBorder = true,
+  disable = false,
+}: IProps): ReactElement {
   return (
     <input
       autoComplete={autoComplete.toString()}
-      className={styles.input}
+      className={classNames(
+        styles.input,
+        hasBorder ? styles.with_border : styles.without_border,
+      )}
       type="text"
       placeholder={placeholder}
       defaultValue={""}
       onChange={onTextChange}
+      disabled={disable}
     />
   );
 }

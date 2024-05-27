@@ -1,28 +1,16 @@
 import { ChangeEvent, ReactElement, SetStateAction } from "react";
 
-import { IAccurancyOption } from "../../interfaces/IAccurancyOption";
-import { ITypeOption } from "../../interfaces/ITypeOption";
 import Label from "../Label/Label";
 import Select from "../Select/Select";
 import TextInput from "../TextInput/TextInput";
+import { IProps } from "./IProps";
 import styles from "./modalwindow.module.scss";
 
-interface Props {
-  firstValue: number | string | null;
-  setFirstValue: (e: SetStateAction<number | string | null>) => void;
-  secondValue: number | string | null;
-  setSecondValue: (e: SetStateAction<number | string | null>) => void;
-  accurancyOptions: IAccurancyOption[];
-  selectedAccuracy: string | null;
-  setSelectedAccurancy: (e: SetStateAction<string | null>) => void;
-  setShowSecondModal: () => void;
-}
-
-function ModalWindow(props: Props): ReactElement {
+function ModalWindow(props: IProps): ReactElement {
   function handleSubmit() {
     let hasError = false;
 
-    if (!parseFloat(props.firstValue as string)) {
+    if (!isFinite(props.firstValue as number) || props.firstValue === "") {
       hasError = true;
 
       (document.getElementById("firstValueError") as HTMLElement).innerText =
@@ -31,7 +19,7 @@ function ModalWindow(props: Props): ReactElement {
       props.setFirstValue(parseFloat(props.firstValue as string));
     }
 
-    if (!parseFloat(props.secondValue as string)) {
+    if (!isFinite(props.secondValue as number) || props.secondValue === "") {
       hasError = true;
       (document.getElementById("secondValueError") as HTMLElement).innerText =
         "Данное поле должно быть числом";
@@ -53,7 +41,6 @@ function ModalWindow(props: Props): ReactElement {
   function handleSetFirstValue(e: ChangeEvent<HTMLInputElement>): void {
     const span = document.getElementById("firstValueError");
     props.setFirstValue(e.target.value.replace(",", "."));
-
     if (span && span.textContent) {
       span.innerText = "";
     }
@@ -62,7 +49,6 @@ function ModalWindow(props: Props): ReactElement {
   function handleSetSecondValue(e: ChangeEvent<HTMLInputElement>): void {
     const span = document.getElementById("secondValueError");
     props.setSecondValue(e.target.value.replace(",", "."));
-
     if (span && span.textContent) {
       span.innerText = "";
     }
@@ -89,6 +75,7 @@ function ModalWindow(props: Props): ReactElement {
             placeholder="Первое число"
             onTextChange={handleSetFirstValue}
             autoComplete={false}
+            hasBorder={false}
           />
           <span id="firstValueError"></span>
         </div>
@@ -98,6 +85,7 @@ function ModalWindow(props: Props): ReactElement {
             placeholder="Второе число"
             onTextChange={handleSetSecondValue}
             autoComplete={false}
+            hasBorder={false}
           />
           <span id="secondValueError"></span>
         </div>
@@ -106,6 +94,7 @@ function ModalWindow(props: Props): ReactElement {
           <Select
             onSelect={handleSetAccurancy}
             options={props.accurancyOptions}
+            resetButton
           />
           <span id="accurancyError"></span>
         </div>

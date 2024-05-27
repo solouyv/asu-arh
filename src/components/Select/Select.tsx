@@ -1,7 +1,6 @@
 import { ChangeEvent, ReactElement, SetStateAction, useRef } from "react";
 
 import { IAccurancyOption } from "@interfaces/IAccurancyOption";
-import { ITypeOption } from "@interfaces/ITypeOption";
 import { MdClear } from "react-icons/md";
 
 import styles from "./select.module.scss";
@@ -14,9 +13,16 @@ interface IOption {
 interface Props {
   options: IOption[];
   onSelect: (e: ChangeEvent<HTMLSelectElement> | null) => void;
+  resetButton: boolean;
+  disable?: boolean;
 }
 
-function Select({ options, onSelect }: Props): ReactElement {
+function Select({
+  options,
+  onSelect,
+  resetButton = true,
+  disable = false,
+}: Props): ReactElement {
   const selectRef = useRef<HTMLSelectElement>(null);
 
   function resetChange(): void {
@@ -29,7 +35,12 @@ function Select({ options, onSelect }: Props): ReactElement {
 
   return (
     <div className={styles.container}>
-      <select ref={selectRef} className={styles.select} onChange={onSelect}>
+      <select
+        ref={selectRef}
+        className={styles.select}
+        onChange={onSelect}
+        disabled={disable}
+      >
         <option disabled value={""} selected>
           Выберите
         </option>
@@ -39,9 +50,11 @@ function Select({ options, onSelect }: Props): ReactElement {
           </option>
         ))}
       </select>
-      <span className={styles.reset_button} onClick={resetChange}>
-        <MdClear color="black" size={30} />
-      </span>
+      {resetButton && (
+        <span className={styles.reset_button} onClick={resetChange}>
+          <MdClear color="black" size={30} />
+        </span>
+      )}
     </div>
   );
 }

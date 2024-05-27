@@ -6,5 +6,6 @@ export default interface IProps {
   size?: ButtonSizes;
   id?: string;
   disabled?: boolean;
+  circle?: boolean;
   onClickFunction: () => void;
 }

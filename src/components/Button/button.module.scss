@@ -7,9 +7,9 @@
   padding: 10px;
   transition: 0.2s all;
   font-size: medium;
+  cursor: pointer;
 
   &:hover {
-    cursor: pointer;
     scale: 1.1;
   }
 
@@ -26,13 +26,21 @@
 .medium {
   width: 150px;
   height: 30px;
+  font-size: 10pt;
 }
 
 .small {
   width: 100px;
-  height: 25px;
+  height: 30px;
+  font-size: 7pt;
 }
 
 .rounded {
   border-radius: vars.$border-radius;
+}
+
+.circle {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
 }
