@@ -1,6 +1,5 @@
-import { ChangeEvent, ReactElement, SetStateAction, useRef } from "react";
+import { ChangeEvent, ReactElement, useRef } from "react";
 
-import { IAccurancyOption } from "@interfaces/IAccurancyOption";
 import { MdClear } from "react-icons/md";
 
 import styles from "./select.module.scss";

@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 
 import { IProps } from "./IProps";
 import styles from "./block.module.scss";

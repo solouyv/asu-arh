@@ -1,20 +1,20 @@
 import { ReactElement } from "react";
 
+import NavPanel from "@components/NavPanel/NavPanel";
+import ThemeProvider from "@components/ThemeProvider/ThemeProvider";
 import { Outlet } from "react-router";
 
-import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
-import styles from "./layout.module.scss";
 
 function Layout(): ReactElement {
   return (
-    <>
+    <ThemeProvider>
       <Header />
-      <main className={styles.main}>
+      <NavPanel />
+      <main>
         <Outlet />
       </main>
-      {/* <Footer /> */}
-    </>
+    </ThemeProvider>
   );
 }
 

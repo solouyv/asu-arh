@@ -12,6 +12,7 @@
   overflow-x: auto;
   border-radius: vars.$border_radius;
   background-color: vars.$bg_color;
+  transition: 0.5s all;
 
   @media (max-width: 560px) {
     width: 300px;
@@ -25,7 +26,6 @@
     display: flex;
     align-self: flex-start;
     margin-top: 11px;
-    color: white;
     font-size: large;
   }
 
@@ -46,20 +46,39 @@
         display: flex;
         justify-content: center;
         font-size: medium;
-        color: black;
+        color: white;
         border-right: 1px solid black;
         border-bottom: 1px solid black;
         width: 20px;
-        background-color: white;
+      }
+
+      .light_digit {
+        border-right: 1px solid black;
+        border-bottom: 1px solid black;
+      }
+
+      .dark_digit {
+        border-right: 1px solid white;
+        border-bottom: 1px solid white;
       }
 
       .number {
         display: flex;
         justify-content: center;
         width: 20px;
-        background-color: white;
         align-items: center;
+      }
+
+      .light_number {
+        color: black;
+        background-color: white;
         border-right: 1px solid black;
+      }
+
+      .dark_number {
+        color: vars.$text_color;
+        background-color: vars.$dark_bg_color;
+        border-right: 1px solid white;
       }
 
       .sing {
@@ -68,6 +87,7 @@
 
       .selected {
         background-color: yellow;
+        color: black;
       }
 
       .isbigger {
@@ -79,4 +99,14 @@
       }
     }
   }
+}
+
+.light {
+  color: vars.$text_color;
+  background-color: vars.$light_bg_color;
+}
+
+.dark {
+  color: vars.$text_color;
+  background-color: vars.$dark_bg_color;
 }

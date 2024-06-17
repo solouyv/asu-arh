@@ -19,28 +19,28 @@
     height: 350px;
     padding: 25px;
     gap: 5px;
+    overflow: auto;
     color: vars.$text_color;
     font-family: vars.$font_default;
     background-color: vars.$bg_color;
     border-radius: vars.$border_radius;
+
+    @media (min-width: 800px) {
+      width: 650px;
+    }
 
     @media (max-width: 600px) {
       width: 300px;
     }
 
     .table {
-      max-width: 450px;
-      max-height: 200px;
-      overflow: auto;
+      // max-width: 450px;
+      // max-height: 200px;
+      overflow: scroll;
 
       &::-webkit-scrollbar {
         scrollbar-width: thin;
       }
-
-      // &::-webkit-scrollbar-track {
-      //   width: 0px;
-      //   background-color: green;
-      // }
 
       &::-webkit-scrollbar-thumb {
         width: 2px;

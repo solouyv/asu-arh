@@ -1,12 +1,12 @@
-import React, { ReactElement, useRef } from "react";
+import { ReactElement } from "react";
 
+import { ButtonSizes } from "@enums/ButtonSizes";
 import classNames from "classnames";
 
-import { ButtonSizes } from "../../enums/ButtonSizes";
 import IProps from "./IProps";
 import styles from "./button.module.scss";
 
-export default function Button({
+function Button({
   text,
   onClickFunction,
   rounded = false,
@@ -35,3 +35,5 @@ export default function Button({
     </button>
   );
 }
+
+export default Button;

@@ -3,5 +3,12 @@
   flex-direction: row;
   width: inherit;
   height: inherit;
+}
+
+.light {
   border: 1px solid black;
+}
+
+.dark {
+  border: 1px solid gray;
 }

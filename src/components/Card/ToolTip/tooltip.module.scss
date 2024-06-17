@@ -10,8 +10,6 @@
   height: inherit;
   padding: inherit;
   font-size: x-large;
-  background-color: vars.$bg_color;
-  color: vars.$text_color;
   transition: 0.3s all;
   opacity: 0;
 
@@ -22,4 +20,14 @@
   &:not(:hover) {
     opacity: 0;
   }
+}
+
+.light {
+  color: vars.$text_color;
+  background-color: vars.$bg_color;
+}
+
+.dark {
+  color: white;
+  background-color: rgb(40, 14, 145);
 }

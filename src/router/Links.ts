@@ -52,9 +52,42 @@ const laboratories: ILink = {
 
 const tests: ILink = {
   title: "Тестирование",
-  path: "/test",
+  path: "/tests",
   toolTipText: "Пройдите тест, чтобы закрепить полученные знания",
 };
+
+const arithmeticOperationsTest: ILink = {
+  title: 'Тест по теме "Арифметические операции в ЭВМ"',
+  path: "arithmetic-operations",
+};
+
+const compareNumbersTest: ILink = {
+  title: 'Тест по теме "Логические операции в ЭВМ"',
+  path: "comparing-numbers",
+};
+
+const dynamicRAMTest: ILink = {
+  title: 'Тест по теме "Динамическое ОЗУ"',
+  path: "dram",
+};
+
+const ramTest: ILink = {
+  title: 'Тест по теме "ОЗУ - основная память в ЭВМ"',
+  path: "ram",
+};
+
+const cacheTest: ILink = {
+  title: 'Тест по теме "Использование КЭШ в ЭВМ"',
+  path: "cache",
+};
+
+const testLinks: ILink[] = [
+  arithmeticOperationsTest,
+  compareNumbersTest,
+  dynamicRAMTest,
+  ramTest,
+  cacheTest,
+];
 
 export {
   compareNumbers,
@@ -66,4 +99,10 @@ export {
   arithmeticOperations,
   laboratories,
   tests,
+  testLinks,
+  arithmeticOperationsTest,
+  compareNumbersTest,
+  dynamicRAMTest,
+  ramTest,
+  cacheTest,
 };

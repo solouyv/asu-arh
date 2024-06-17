@@ -1,7 +1,5 @@
 import { ReactElement } from "react";
 
-import classNames from "classnames";
-
 import { IProps } from "./IProps";
 import styles from "./table.module.scss";
 

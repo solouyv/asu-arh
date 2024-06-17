@@ -1,8 +1,9 @@
+@use "../../../styles/vars.scss" as vars;
+
 .cell {
   width: 30px;
   height: 30px;
   text-align: center;
-  border: 1px solid black;
   padding: 0;
   font-size: large;
   cursor: pointer;
@@ -17,6 +18,7 @@
   @media (max-width: 390px) {
     font-size: small;
   }
+
   @media (max-width: 350px) {
     font-size: x-small;
   }
@@ -56,5 +58,19 @@
 }
 
 .checking_for_already_used_values {
-  background-color: rgba(255, 0, 0, 0.7);
+  background-color: rgba(247, 181, 0, 0.7);
+}
+
+.light {
+  color: black;
+  background-color: white;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.dark {
+  color: white;
+  background-color: vars.$dark_bg_color;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
 }

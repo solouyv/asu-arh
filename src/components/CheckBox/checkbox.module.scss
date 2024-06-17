@@ -1,0 +1,26 @@
+.container {
+  display: grid;
+  grid-template-columns: 50px auto;
+  align-items: center;
+
+  label {
+    font-weight: bold;
+    font-size: larger;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  input[type="checkbox"] {
+    width: 32px;
+    height: 20px;
+    cursor: pointer;
+  }
+}
+
+.currect {
+  background-color: green;
+}
+
+.uncurrect {
+  background-color: red;
+}

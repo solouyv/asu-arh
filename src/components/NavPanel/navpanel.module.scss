@@ -1,0 +1,57 @@
+@use "../../styles/vars.scss" as vars;
+
+.mobile_container {
+  display: flex;
+  flex-direction: column;
+  transition: 0.5s all;
+
+  .button {
+    color: vars.$text_color;
+  }
+}
+
+.mobile_nav_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  transition: 0.5s all;
+
+  .link {
+    color: vars.$text_color;
+    text-decoration: none;
+    font-size: larger;
+  }
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  padding-bottom: 5px;
+  transition: 0.5s all;
+
+  .link {
+    color: vars.$text_color;
+    text-decoration: none;
+    font-size: larger;
+
+    @media (min-width: 1920px) {
+      font-size: x-large;
+    }
+
+    &:hover {
+      color: red;
+    }
+  }
+}
+
+.light {
+  background-color: vars.$bg_color;
+}
+
+.dark {
+  background-color: vars.$dark_bg_color;
+}

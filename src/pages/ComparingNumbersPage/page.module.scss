@@ -38,15 +38,14 @@
     display: flex;
     flex-direction: column;
     align-self: center;
-    width: 25em;
-    background-color: vars.$bg_color;
-    height: 280px;
+    width: 400px;
+    height: 350px;
     border-radius: vars.$border-radius;
     padding: 10px;
+    transition: 0.5s all;
 
     @media (max-height: 750px) and (max-width: 1110px) {
-      width: 18em;
-      height: 200px;
+      width: 288em;
     }
 
     @media (max-width: 560px) {
@@ -65,7 +64,6 @@
       height: 60%;
       word-wrap: break-word;
       font-size: x-large;
-      color: vars.$text_color;
 
       @media (max-height: 750px) and (max-width: 1110px) {
         gap: 10px;
@@ -106,4 +104,14 @@
       gap: 10px;
     }
   }
+}
+
+.light {
+  color: vars.$text_color;
+  background-color: vars.$light_bg_color;
+}
+
+.dark {
+  color: vars.$text_color;
+  background-color: vars.$dark_bg_color;
 }

@@ -1,4 +1,11 @@
-import { ChangeEvent, ReactElement, useEffect, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  ReactElement,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import Button from "@components/Button/Button";
 import ColorBlock from "@components/ColorContainer/ColorBlock/ColorBlock";
@@ -7,10 +14,13 @@ import Select from "@components/Select/Select";
 import Table from "@components/Table/Table/Table";
 import TableContainer from "@components/Table/TableContainer/TableContainer";
 import WindowForTheory from "@components/WindowForTheory/WindowForTheory";
+import { RAMValuesChangedInCurrentSessionContext } from "@context/RAMValuesChangedInCurrentSessionContext";
+import { ThemeContext } from "@context/ThemeContext";
 import { RAMTableSizes } from "@enums/RAMTableSizes";
 import useMatchMedia from "@hooks/useMatchMedia";
 import { IRAMValue } from "@interfaces/IRAMValue";
 import { IRAMValues } from "@interfaces/IRAMValues";
+import classNames from "classnames";
 
 import { ButtonSizes } from "../../enums/ButtonSizes";
 import { getRandomNumber } from "../../scripts/scripts";
@@ -23,6 +33,7 @@ interface IInputNumber {
 }
 
 function DynamicRAMPage(): ReactElement {
+  const { theme } = useContext(ThemeContext);
   const timer = useRef<number | undefined>();
   const [values, setValues] = useState<string[][]>([]);
   const [zeroValues, setZeroValues] = useState<IRAMValues[]>([]);
@@ -245,21 +256,26 @@ function DynamicRAMPage(): ReactElement {
       {showTheory && (
         <WindowForTheory text={dramTheory} hideFunc={handleShowTheory} />
       )}
-      <TableContainer size={defineTableSize()}>
-        <Table
-          showChecking={showChecking}
-          checkingColIndex={checkingColIndex}
-          checkingRowIndex={checkingRowIndex}
-          zeroValues={zeroValues}
-          values={values}
-          showZeroValues={showZeroValues}
-          changeValue={changeValue}
-          selectedValues={selectedValues}
-          setSelectedValues={setSelectedValues}
-          numberOfBlock={numberOfBlock}
-        />
-      </TableContainer>
-      <div className={styles.controls_container}>
+      <RAMValuesChangedInCurrentSessionContext.Provider
+        value={{ valuesChangedInCurrentSession: valuesChangedInCurrentSession }}
+      >
+        <TableContainer size={defineTableSize()}>
+          <Table
+            showChecking={showChecking}
+            checkingColIndex={checkingColIndex}
+            checkingRowIndex={checkingRowIndex}
+            zeroValues={zeroValues}
+            values={values}
+            showZeroValues={showZeroValues}
+            changeValue={changeValue}
+            selectedValues={selectedValues}
+            setSelectedValues={setSelectedValues}
+            numberOfBlock={numberOfBlock}
+          />
+        </TableContainer>
+      </RAMValuesChangedInCurrentSessionContext.Provider>
+
+      <div className={classNames(styles.controls_container, styles[theme])}>
         <div className={styles.input_container}>
           <span>Ввод значения</span>
           <Select

@@ -6,6 +6,8 @@ import DynamicRAMPage from "@pages/DynamicRAMPage/DynamicRAMPage";
 import LaboratoriesPage from "@pages/LaboratoriesPage/LaboratoriesPage";
 import MainPage from "@pages/MainPage/MainPage";
 import RAMPage from "@pages/RAMPage/RAMPage";
+import TestPage from "@pages/TestPage/TestPage";
+import TestsPage from "@pages/TestsPage/TestsPage";
 import { Route, Routes } from "react-router";
 
 import {
@@ -15,6 +17,7 @@ import {
   compareNumbers,
   dynamicRAM,
   laboratories,
+  tests,
 } from "./Links";
 
 function AppRouter() {
@@ -37,7 +40,12 @@ function AppRouter() {
         />
         <Route path={laboratories.path + RAM.path} element={<RAMPage />} />
         <Route path={laboratories.path + cache.path} element={<CachePage />} />
+        <Route path={tests.path} element={<TestsPage />} />
+        <Route path="test" element={<TestPage />}>
+          <Route path=":theme/" element={<div>1234324</div>} />
+        </Route>
       </Route>
+
       <Route path="*" element={<h1>Такой страницы нет</h1>} />
     </Routes>
   );

@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: x-large;
+  font-weight: bold;
+  padding: 10px;
+  transition: 0.2s all;
+}
+
+.light {
+  color: black;
+}
+
+.dark {
+  color: white;
+}

@@ -7,9 +7,9 @@ export interface IProps {
   showAddedValue?: boolean;
   showFoundedValue?: boolean;
   changeValue: (
+    value: string,
     rowIndex: number,
     colIndex: number,
-    value: string,
     numberOfCache: string,
   ) => void;
   isCheckingForAlreadyUsedValues: boolean;

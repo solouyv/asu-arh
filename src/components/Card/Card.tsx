@@ -1,15 +1,15 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useContext, useState } from "react";
 
+import { ThemeContext } from "@context/ThemeContext";
+import classNames from "classnames";
+
+import { IProps } from "./IProps";
 import ToolTip from "./ToolTip/ToolTip";
 import styles from "./card.module.scss";
 
-interface Props {
-  title: string;
-  toolTipText?: string;
-}
-
-function Card({ title = "", toolTipText = "" }: Props): ReactElement {
+function Card({ title = "", toolTipText = "" }: IProps): ReactElement {
   const [showToolTip, setShowTooltip] = useState<boolean>(false);
+  const { theme } = useContext(ThemeContext);
 
   function switchShow() {
     setShowTooltip((prev) => !prev);
@@ -17,7 +17,7 @@ function Card({ title = "", toolTipText = "" }: Props): ReactElement {
 
   return (
     <div
-      className={styles.container}
+      className={classNames(styles.container, styles[theme])}
       onMouseEnter={switchShow}
       onMouseLeave={switchShow}
     >

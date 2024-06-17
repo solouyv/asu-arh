@@ -1,3 +1,5 @@
+import { Theme } from "@enums/Theme";
+
 function getRandomNumber(min: number, max: number): number {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -16,4 +18,14 @@ function createAPathWithParametr(
   }
 }
 
-export { getRandomNumber, createAPathWithParametr };
+function getTheme(): string {
+  const currentTheme: string | null = localStorage.getItem("theme");
+
+  if (currentTheme) {
+    return currentTheme === "light" ? Theme.Light : Theme.Dark;
+  } else {
+    return Theme.Light;
+  }
+}
+
+export { getRandomNumber, createAPathWithParametr, getTheme };

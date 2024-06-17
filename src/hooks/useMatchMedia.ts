@@ -1,6 +1,7 @@
 import { useLayoutEffect, useState } from "react";
 
 interface IMedia {
+  isUnder324px: boolean;
   isSmallMobile: boolean;
   isMobile: boolean;
   isTablet: boolean;
@@ -11,6 +12,7 @@ interface IMedia {
 }
 
 const resolutions: string[] = [
+  "(max-width: 324px)",
   "(min-width: 325px) and (max-width: 390px)",
   "(min-width: 391px) and (max-width: 480px)",
   "(min-width: 481px) and (max-width: 768px)",
@@ -48,6 +50,7 @@ function useMatchMedia(): IMedia {
   });
 
   return [
+    "isUnder324px",
     "isSmallMobile",
     "isMobile",
     "isTablet",

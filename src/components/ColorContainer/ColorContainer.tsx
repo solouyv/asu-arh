@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from "react";
+import { ReactElement } from "react";
 
 import { IProps } from "./IProps";
 import styles from "./container.module.scss";

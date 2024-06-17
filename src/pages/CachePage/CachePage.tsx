@@ -1,4 +1,10 @@
-import { ReactElement, SetStateAction, useEffect, useState } from "react";
+import {
+  ReactElement,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 import Button from "@components/Button/Button";
 import CacheContainer from "@components/Cache/CacheContainer/CacheContainer";
@@ -8,10 +14,12 @@ import Table from "@components/Table/Table/Table";
 import TableContainer from "@components/Table/TableContainer/TableContainer";
 import TextInput from "@components/TextInput/TextInput";
 import WindowForTheory from "@components/WindowForTheory/WindowForTheory";
+import { ThemeContext } from "@context/ThemeContext";
 import { CacheTableSizes } from "@enums/CacheTableSizes";
 import { RAMTableSizes } from "@enums/RAMTableSizes";
 import useMatchMedia from "@hooks/useMatchMedia";
 import { getRandomNumber } from "@scripts/scripts";
+import classNames from "classnames";
 
 import { cacheTheory } from "./cacheTheory";
 import styles from "./page.module.scss";
@@ -81,6 +89,7 @@ function CachePage(): ReactElement {
     { title: "LFU", value: "LFU" },
     { title: "LRU", value: "LRU" },
   ]);
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     fillValues(setValuesOfL3Cache, 3, true);
@@ -586,9 +595,9 @@ function CachePage(): ReactElement {
   }
 
   function changeValue(
+    value: string,
     rowIndex: number,
     colIndex: number,
-    value: string,
     titleOfCache: string,
   ) {
     const isL2Cache: boolean = titleOfCache.includes("L2");
@@ -697,7 +706,7 @@ function CachePage(): ReactElement {
           </CacheContainer>
         </div>
       </div>
-      <div className={styles.controls_container}>
+      <div className={classNames(styles.controls_container, styles[theme])}>
         <div className={styles.input_container}>
           <span>Введите число</span>
           <TextInput

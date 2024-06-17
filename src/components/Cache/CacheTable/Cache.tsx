@@ -1,4 +1,8 @@
-import { ReactElement } from "react";
+import { ReactElement, useContext } from "react";
+
+import { ThemeContext } from "@context/ThemeContext";
+import { Theme } from "@enums/Theme";
+import classNames from "classnames";
 
 import CacheUnit from "../CacheUnit/CacheUnit";
 import { IProps } from "./IProps";
@@ -16,17 +20,31 @@ function Cache({
   isCheckingForAlreadyUsedValues,
   isChangeable = true,
 }: IProps): ReactElement {
+  const { theme } = useContext(ThemeContext);
+
   function isChecking(rowIndex: number, colIndex: number): boolean {
     return checkingRowIndex === rowIndex && checkingColIndex === colIndex;
   }
 
   return (
     <table className={styles.cache_table}>
-      <caption className={styles.header}>{title}</caption>
+      <caption
+        className={classNames(
+          styles.header,
+          theme === Theme.Light ? styles.light_header : styles.dark_header,
+        )}
+      >
+        {title}
+      </caption>
       <tbody>
         {values.map((arr, rowIndex) => {
           return (
-            <tr key={rowIndex + 10000}>
+            <tr
+              className={
+                theme === Theme.Light ? styles.light_row : styles.dark_row
+              }
+              key={rowIndex + 10000}
+            >
               {(arr as string[]).map((item, colIndex) => (
                 <CacheUnit
                   key={colIndex + 100000}

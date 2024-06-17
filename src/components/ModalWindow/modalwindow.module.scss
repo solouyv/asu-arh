@@ -2,7 +2,7 @@
 
 .back {
   position: fixed;
-  top: vars.$header_height;
+  top: vars.$header_height + 25px;
   bottom: vars.$footer_height;
   left: 0;
   display: flex;
@@ -19,9 +19,7 @@
   .container {
     display: grid;
     align-items: center;
-    color: vars.$text_color;
     border-radius: vars.$border-radius;
-    background-color: vars.$bg_color;
     font-size: vars.$font_size;
     font-family: vars.$font_default;
     width: 500px;
@@ -30,16 +28,31 @@
     height: auto;
     padding: 25px;
     gap: 15px;
+    transition: 0.5s all;
+
+    @media (max-width: 768px) {
+      margin-top: 50px;
+    }
+
+    @media (max-width: 720px) {
+      margin-top: 100px;
+    }
+
+    @media (max-width: 606px) {
+      margin-top: 200px;
+      width: 300px;
+    }
+
+    @media (max-width: 500px) {
+      margin-top: 50px;
+      width: 300px;
+    }
 
     @media (max-width: 375px) {
       height: 450px;
       padding: 15px;
       gap: 5px;
-      margin-top: 100px;
-    }
-
-    @media (max-width: 600px) {
-      width: 300px;
+      margin-top: 50px;
     }
 
     h1 {
@@ -130,4 +143,14 @@
       height: 30px;
     }
   }
+}
+
+.light {
+  color: vars.$text_color;
+  background-color: vars.$light_bg_color;
+}
+
+.dark {
+  color: vars.$text_color;
+  background-color: vars.$dark_bg_color;
 }

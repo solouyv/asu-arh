@@ -1,5 +1,7 @@
-import React, { ReactElement } from "react";
+import { ReactElement, useContext } from "react";
 
+import { ThemeContext } from "@context/ThemeContext";
+import { Theme } from "@enums/Theme";
 import classNames from "classnames";
 
 import { IProps } from "./IProps";
@@ -13,8 +15,9 @@ function BlockForNumberInBinSystem({
   isLower,
   areEquals,
 }: IProps): ReactElement {
+  const { theme } = useContext(ThemeContext);
   return (
-    <div className={styles.block}>
+    <div className={classNames(styles.block, styles[theme])}>
       <div className={styles.title_digits}>Разряды</div>
       <div className={styles.outer_container_for_numbers}>
         <div className={styles.numbers_container}>
@@ -29,6 +32,9 @@ function BlockForNumberInBinSystem({
                   className={classNames(
                     index === 0 && styles.sing,
                     styles.digit,
+                    theme === Theme.Light
+                      ? styles.light_digit
+                      : styles.dark_digit,
                     index === indexOfSelectedDigit &&
                       areEquals &&
                       styles.selected,
@@ -42,6 +48,9 @@ function BlockForNumberInBinSystem({
                 </span>
                 <span
                   className={classNames(
+                    theme === Theme.Light
+                      ? styles.light_number
+                      : styles.dark_number,
                     index === 0 ? styles.sing : null,
                     styles.number,
                     index === indexOfSelectedDigit &&

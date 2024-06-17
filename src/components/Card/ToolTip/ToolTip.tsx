@@ -1,14 +1,17 @@
-import { ReactElement } from "react";
+import { ReactElement, useContext } from "react";
 
+import { ThemeContext } from "@context/ThemeContext";
+import classNames from "classnames";
+
+import { IProps } from "./IProps";
 import styles from "./tooltip.module.scss";
 
-interface Props {
-  isVisible: boolean;
-  text: string;
-}
+function ToolTip({ text = "" }: IProps): ReactElement {
+  const { theme } = useContext(ThemeContext);
 
-function ToolTip({ text = "" }: Props): ReactElement {
-  return <div className={styles.container}>{text}</div>;
+  return (
+    <div className={classNames(styles.container, styles[theme])}>{text}</div>
+  );
 }
 
 export default ToolTip;

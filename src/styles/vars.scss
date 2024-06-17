@@ -5,7 +5,14 @@ $footer_height: 66px;
 $header_height: 80px;
 $border-radius: 10px;
 $font_size: 20px;
-$test: green;
+$light_text_color: #f7f6de;
+$light_bg_color: #00528e;
+$dark_bg_color: rgb(14, 14, 66);
+
+@mixin link() {
+  text-decoration: none;
+  color: inherit;
+}
 
 body {
   margin: 0px;

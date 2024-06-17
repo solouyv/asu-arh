@@ -1,11 +1,36 @@
+@use "../../../styles/vars.scss" as vars;
+
 .cache_table {
   width: inherit;
   height: inherit;
   border: 2px solid black;
   border-collapse: collapse;
 
-  .header {
+  .light_header {
     border: 2px solid black;
     border-bottom: none;
+    color: black;
   }
+
+  .dark_header {
+    border: 2px solid vars.$dark_bg_color;
+    border-bottom: none;
+    color: whitesmoke;
+  }
+
+  .light_row {
+    border: 1px solid black;
+  }
+
+  .dark_row {
+    border: 1px solid gray;
+  }
+}
+
+.light {
+  border: 2px solid black;
+}
+
+.dark {
+  border: 2px solid gray;
 }

@@ -36,7 +36,7 @@ function Table({
     <div className={styles.container}>
       {values.map((arr, rowIndex) => {
         return (
-          <TableRow>
+          <TableRow key={rowIndex}>
             {arr.map((item, colIndex) => {
               return (
                 <TableCell

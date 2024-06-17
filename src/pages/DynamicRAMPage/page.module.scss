@@ -1,3 +1,5 @@
+@use "../../styles/vars.scss" as vars;
+
 .container {
   display: flex;
   flex-direction: column;
@@ -29,6 +31,7 @@
     height: 250px;
     gap: 20px;
     padding: 10px;
+    transition: 0.5s all;
 
     @media (max-width: 1400px) and (min-height: 924px) {
       justify-content: center;
@@ -93,4 +96,14 @@
       gap: 10px;
     }
   }
+}
+
+.light {
+  color: white;
+  background-color: vars.$light_bg_color;
+}
+
+.dark {
+  color: vars.$text_color;
+  background-color: vars.$dark_bg_color;
 }

@@ -1,3 +1,5 @@
+@use "../../../styles/vars.scss" as vars;
+
 .cell {
   display: flex;
   justify-content: center;
@@ -5,8 +7,6 @@
   width: inherit;
   height: auto;
   text-align: center;
-  border-left: 1px solid black;
-  border-right: 1px solid black;
   font-size: large;
   cursor: pointer;
   -webkit-user-select: none;
@@ -74,4 +74,18 @@
 
 .changed {
   background-color: rgba(208, 132, 9, 0.4);
+}
+
+.light {
+  color: black;
+  background-color: white;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.dark {
+  color: white;
+  background-color: vars.$dark_bg_color;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
 }

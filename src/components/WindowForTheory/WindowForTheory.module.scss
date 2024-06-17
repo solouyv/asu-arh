@@ -13,16 +13,19 @@
     flex-direction: column;
     justify-content: space-evenly;
     margin: auto;
-    width: 500px;
-    height: 350px;
+    width: 800px;
+    height: 550px;
     padding: 25px;
     gap: 5px;
-    color: vars.$text_color;
     font-family: vars.$font_default;
-    background-color: vars.$bg_color;
     border-radius: vars.$border_radius;
 
-    @media (max-width: 600px) {
+    @media (max-width: 800px) {
+      padding: 15px;
+    }
+
+    @media (max-width: 400px) {
+      padding: 15px;
       width: 300px;
     }
 
@@ -33,7 +36,7 @@
       padding: 10px;
       height: 70%;
       overflow-y: auto;
-      font-size: larger;
+      font-size: x-large;
       outline: none;
       resize: none;
     }
@@ -44,4 +47,14 @@
       align-items: center;
     }
   }
+}
+
+.light {
+  color: white;
+  background-color: steelblue;
+}
+
+.dark {
+  color: vars.$text_color;
+  background-color: rgb(18, 18, 94);
 }

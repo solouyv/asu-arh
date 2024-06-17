@@ -1,7 +1,8 @@
-import React, {
+import {
   ChangeEvent,
   ReactElement,
   SetStateAction,
+  useContext,
   useEffect,
   useRef,
   useState,
@@ -15,6 +16,7 @@ import Table from "@components/Table/Table/Table";
 import TableContainer from "@components/Table/TableContainer/TableContainer";
 import WindowForTheory from "@components/WindowForTheory/WindowForTheory";
 import { RAMValuesChangedInCurrentSessionContext } from "@context/RAMValuesChangedInCurrentSessionContext";
+import { ThemeContext } from "@context/ThemeContext";
 import { ButtonSizes } from "@enums/ButtonSizes";
 import { RAMTableSizes } from "@enums/RAMTableSizes";
 import useMatchMedia from "@hooks/useMatchMedia";
@@ -22,6 +24,7 @@ import { IBlockForAnalysis } from "@interfaces/IBlocksForAnalysis";
 import { IRAMValue } from "@interfaces/IRAMValue";
 import { IRAMValues } from "@interfaces/IRAMValues";
 import { getRandomNumber } from "@scripts/scripts";
+import classNames from "classnames";
 
 import styles from "./page.module.scss";
 import { ramTheory } from "./ramTheory";
@@ -32,6 +35,7 @@ interface IInputNumber {
 }
 
 function RAMPage(): ReactElement {
+  const { theme } = useContext(ThemeContext);
   const timer = useRef<number | undefined>();
   const [checkingBlock, setCheckingBlock] = useState<number>(0);
   const [firstBlockvalues, setFirstBlockValues] = useState<string[][]>([]);
@@ -252,7 +256,7 @@ function RAMPage(): ReactElement {
 
     setSelectedValues([]);
 
-    setValues(values);
+    setValues(array);
   }
 
   function startChangeValue(
@@ -654,7 +658,7 @@ function RAMPage(): ReactElement {
           </TableContainer>
         </div>
       </div>
-      <div className={styles.controls_container}>
+      <div className={classNames(styles.controls_container, styles[theme])}>
         <div className={styles.input_container}>
           <span>Ввод значения</span>
           <Select

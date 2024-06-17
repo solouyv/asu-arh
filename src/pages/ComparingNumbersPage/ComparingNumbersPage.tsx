@@ -1,16 +1,19 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useContext, useEffect, useState } from "react";
 
 import BlockForNumberInBinSystem from "@components/BlockForNumberInBinSystem/BlockForNumberInBinSystem";
 import Button from "@components/Button/Button";
 import ModalWindow from "@components/ModalWindow/ModalWindow";
 import WindowForTheory from "@components/WindowForTheory/WindowForTheory";
+import { ThemeContext } from "@context/ThemeContext";
+import { ButtonSizes } from "@enums/ButtonSizes";
 import { IAccurancyOption } from "@interfaces/IAccurancyOption";
+import classNames from "classnames";
 
-import { ButtonSizes } from "../../enums/ButtonSizes";
 import styles from "./page.module.scss";
 import theory from "./theory";
 
 function ComparingNumbersPage(): ReactElement {
+  const { theme } = useContext(ThemeContext);
   const [firstValue, setFirstValue] = useState<string | number | null>(0);
   const [firstValueInBin, setFirstValueInBin] = useState<string>("");
   const [secondValue, setSecondValue] = useState<string | number | null>(0);
@@ -299,18 +302,8 @@ function ComparingNumbersPage(): ReactElement {
             />
           </div>
         </div>
-        <div className={styles.info_container}>
+        <div className={classNames(styles.info_container, styles[theme])}>
           <div className={styles.text_container}>
-            {!showTheory && (
-              <div className={styles.info_button}>
-                <Button
-                  size={ButtonSizes.Small}
-                  text="?"
-                  onClickFunction={showTheoryFunc}
-                  circle
-                />
-              </div>
-            )}
             <div className={styles.result}>{result}</div>
             <div className={styles.compare}>
               <div>{currentDigit !== -1 && selectedDigitOfFirstValue}</div>
@@ -329,6 +322,13 @@ function ComparingNumbersPage(): ReactElement {
               onClickFunction={reEnterData}
               size={ButtonSizes.Big}
             />
+            {!showTheory && (
+              <Button
+                size={ButtonSizes.Big}
+                text="Показать теорию"
+                onClickFunction={showTheoryFunc}
+              />
+            )}
           </div>
         </div>
       </div>

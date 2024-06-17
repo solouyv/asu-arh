@@ -1,11 +1,13 @@
-import React, {
+import {
   ChangeEvent,
   FocusEvent,
   ReactElement,
+  useContext,
   useEffect,
   useState,
 } from "react";
 
+import { ThemeContext } from "@context/ThemeContext";
 import classNames from "classnames";
 
 import { IProps } from "./IProps";
@@ -25,7 +27,7 @@ function CacheUnit({
 }: IProps): ReactElement {
   const [focus, setFocus] = useState<boolean>();
   const [value, setValue] = useState<string>("");
-
+  const { theme } = useContext(ThemeContext);
   useEffect(() => {
     setValue(text);
   }, [text]);
@@ -64,10 +66,24 @@ function CacheUnit({
     }
   }
 
+  function isThemeEnable(): string {
+    if (
+      !isChecking &&
+      !isAddedValue &&
+      !isValueFounded &&
+      !isCheckingForAlreadyUsedValues
+    ) {
+      return styles[theme];
+    } else {
+      return "";
+    }
+  }
+
   if (focus) {
     return (
       <td
         className={classNames(
+          isThemeEnable(),
           styles.cell,
           isCheckingForAlreadyUsedValues &&
             styles.checking_for_already_used_values,
@@ -88,6 +104,7 @@ function CacheUnit({
     return (
       <td
         className={classNames(
+          isThemeEnable(),
           styles.cell,
           isCheckingForAlreadyUsedValues &&
             styles.checking_for_already_used_values,

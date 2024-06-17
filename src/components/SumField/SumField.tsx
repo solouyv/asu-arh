@@ -1,4 +1,8 @@
-import React, { ReactElement } from "react";
+import { ReactElement, useContext } from "react";
+
+import { ThemeContext } from "@context/ThemeContext";
+import { Theme } from "@enums/Theme";
+import classNames from "classnames";
 
 import { IProps } from "./IProps";
 import styles from "./field.module.scss";
@@ -20,9 +24,19 @@ function SumField({
   isSecondValueNegative = false,
   sumId,
 }: IProps): ReactElement {
+  const { theme } = useContext(ThemeContext);
+
   if (addingUnit) {
     return (
-      <div id={sectionId} className={styles.row_container}>
+      <div
+        id={sectionId}
+        className={classNames(
+          styles.row_container,
+          theme === Theme.Light
+            ? styles.light_row_container
+            : styles.dark_row_container,
+        )}
+      >
         <div className={styles.row_three_col}>
           <div className={styles.step_title}>{sectionTitle}</div>
           <div style={{ wordBreak: "break-all" }}>
@@ -59,8 +73,14 @@ function SumField({
           </div>
         </div>
         <div className={styles.row_three_col}>
-          <div>Добавочная единица</div>
-          <div>
+          <div style={{ gridColumnStart: "2" }}>Добавочная единица</div>
+          <div
+            className={
+              theme === Theme.Light
+                ? styles.light_adding_unit
+                : styles.dark_adding_unit
+            }
+          >
             {addingUnit.split("").map((value, index) => {
               if (value === ".") {
                 return <span key={index}>{value}</span>;
@@ -74,7 +94,13 @@ function SumField({
             })}
           </div>
           {isSecondValueNegative && (
-            <div>
+            <div
+              className={
+                theme === Theme.Light
+                  ? styles.light_adding_unit
+                  : styles.dark_adding_unit
+              }
+            >
               {addingUnit.split("").map((value, index) => {
                 if (value === ".") {
                   return <span key={index}>{value}</span>;
@@ -90,7 +116,7 @@ function SumField({
           )}
         </div>
         <div className={styles.row_three_col}>
-          <div>Результат</div>
+          <div style={{ gridColumnStart: "2" }}>Результат</div>
           <div className={styles.sum}>
             <span id={resultIdOfFirstAdding}></span>
           </div>
@@ -104,16 +130,40 @@ function SumField({
     );
   } else {
     return (
-      <div id={sectionId} className={styles.addiction_container}>
+      <div
+        id={sectionId}
+        className={classNames(
+          styles.addiction_container,
+          theme === Theme.Light
+            ? styles.light_addiction_container
+            : styles.dark_addiction_container,
+        )}
+      >
         <div className={styles.row}>
           <div className={styles.step_title}>{sectionTitle}</div>
           <div style={{ wordBreak: "break-all" }}>
             {firstValue.split("").map((value, index) => {
               if (value === ".") {
-                return <span key={index}>{value}</span>;
+                return (
+                  <span
+                    className={
+                      theme === Theme.Light
+                        ? styles.light_digit
+                        : styles.dark_digit
+                    }
+                    key={index}
+                  >
+                    {value}
+                  </span>
+                );
               } else {
                 return (
                   <span
+                    className={
+                      theme === Theme.Light
+                        ? styles.light_digit
+                        : styles.dark_digit
+                    }
                     key={index}
                     id={index + templateForEachDigitsOfFirstValue}
                   >
@@ -126,10 +176,26 @@ function SumField({
           <div style={{ wordBreak: "break-all" }}>
             {secondValue.split("").map((value, index) => {
               if (value === ".") {
-                return <span key={index}>{value}</span>;
+                return (
+                  <span
+                    className={
+                      theme === Theme.Light
+                        ? styles.light_digit
+                        : styles.dark_digit
+                    }
+                    key={index}
+                  >
+                    {value}
+                  </span>
+                );
               } else {
                 return (
                   <span
+                    className={
+                      theme === Theme.Light
+                        ? styles.light_digit
+                        : styles.dark_digit
+                    }
                     key={index}
                     id={index + templateForEachDigitsOfSecondValue}
                   >

@@ -2,10 +2,10 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border: 2px solid black;
   border-radius: 25px;
   gap: 5px 0;
   padding: 5px 0;
+  transition: 0.5s all;
 
   .row_three_col {
     display: grid;
@@ -43,4 +43,16 @@
     justify-self: center;
     font-size: x-large;
   }
+}
+
+.light_row_container {
+  color: black;
+  background-color: white;
+  border: 2px solid black;
+}
+
+.dark_row_container {
+  color: white;
+  background-color: rgb(4, 4, 100);
+  border: 2px solid black;
 }

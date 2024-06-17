@@ -1,4 +1,4 @@
-import { ButtonSizes } from "../../enums/ButtonSizes";
+import { ButtonSizes } from "@enums/ButtonSizes";
 
 export default interface IProps {
   text: string;

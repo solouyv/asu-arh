@@ -1,10 +1,8 @@
 import { ReactElement } from "react";
 
-interface Props {
-  title: string;
-}
+import { IProps } from "./IProps";
 
-function Label({ title = "" }: Props): ReactElement {
+function Label({ title = "" }: IProps): ReactElement {
   return <label>{title}</label>;
 }
 

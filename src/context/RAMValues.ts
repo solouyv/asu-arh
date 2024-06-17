@@ -1,7 +1,5 @@
 import React from "react";
 
-import { IRAMValue } from "@interfaces/IRAMValue";
-
 interface IContext {
   numberOfBlock: number;
   valuesOfBlock: string[][];

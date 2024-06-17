@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 
-import { TableSizes } from "@enums/RAMTableSizes";
+import { RAMTableSizes } from "@enums/RAMTableSizes";
 
 export interface IProps {
-  size: TableSizes;
+  size: RAMTableSizes;
   children: ReactNode;
 }

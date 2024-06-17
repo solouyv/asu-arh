@@ -5,10 +5,12 @@ import {
   SetStateAction,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 
 import { RAMValuesChangedInCurrentSessionContext } from "@context/RAMValuesChangedInCurrentSessionContext";
+import { ThemeContext } from "@context/ThemeContext";
 import { IRAMValues } from "@interfaces/IRAMValues";
 import classNames from "classnames";
 
@@ -37,6 +39,7 @@ function TableCell({
   const { valuesChangedInCurrentSession } = useContext(
     RAMValuesChangedInCurrentSessionContext,
   );
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     if (isSelectable) {
@@ -78,12 +81,12 @@ function TableCell({
   }
 
   function setText(e: ChangeEvent<HTMLInputElement>) {
-    changeValue(numberOfBlock, rowIndex, colIndex, e.target.value);
+    changeValue(rowIndex, colIndex, e.target.value, numberOfBlock);
     setValue(e.target.value);
   }
 
   function selectItem() {
-    if (isCtrlDown) {
+    if (isCtrlDown || isPhone()) {
       setIsSelected((prev) => !prev);
     }
   }
@@ -112,10 +115,30 @@ function TableCell({
     );
   }
 
+  function isThemeEnable(): string {
+    if (!isChecking && !isSelected && !showZeroValues && !isChanged) {
+      return styles[theme];
+    } else {
+      return "";
+    }
+  }
+
+  function isPhone(): boolean {
+    if (
+      navigator.userAgent.match(/Android/i) ||
+      navigator.userAgent.match(/iPhone/i)
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   if (focus) {
     return (
       <div
         className={classNames(
+          isThemeEnable(),
           styles.cell,
           showZeroValues && isZero !== null
             ? isZero
@@ -141,6 +164,7 @@ function TableCell({
     return (
       <div
         className={classNames(
+          isThemeEnable(),
           styles.cell,
           showZeroValues && isZero !== null
             ? isZero

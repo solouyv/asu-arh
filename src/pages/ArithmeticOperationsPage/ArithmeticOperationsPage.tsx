@@ -2,6 +2,7 @@ import {
   MutableRefObject,
   ReactElement,
   SetStateAction,
+  useContext,
   useEffect,
   useRef,
   useState,
@@ -12,19 +13,24 @@ import GridRowContainer from "@components/GridRowContainer/GridRow";
 import ModalWindow from "@components/ModalWindow/ModalWindow";
 import SumField from "@components/SumField/SumField";
 import WindowForMultiply from "@components/WindowForMultiply/WindowForMultiply";
+import { ThemeContext } from "@context/ThemeContext";
 import { ButtonSizes } from "@enums/ButtonSizes";
+import { Theme } from "@enums/Theme";
 import useMatchMedia from "@hooks/useMatchMedia";
 import { IAccurancyOption } from "@interfaces/IAccurancyOption";
 import {
   addingNumbers as addingNumbersPath,
   multiplicationOfNumbers as multiplicationOfNumbersPath,
 } from "@router/Links";
+import classNames from "classnames";
+import { FaTable } from "react-icons/fa";
 import { useSearchParams } from "react-router-dom";
 
 import styles from "./page.module.scss";
 import { theory } from "./theory";
 
 function ArithmeticOperationsPage(): ReactElement {
+  const { theme } = useContext(ThemeContext);
   const timer1 = useRef<number>();
   const timer2 = useRef<number>();
   const timerOfSum = useRef<number>();
@@ -33,6 +39,7 @@ function ArithmeticOperationsPage(): ReactElement {
   const [isSecondTimerEnd, setIsSecondTimerEnd] = useState<boolean>(false);
   const [isTimerOfSumEnd, setIsTimerOfSumEnd] = useState<boolean>(false);
   const [delay] = useState<number>(700);
+  const [prevSection, setPrevSection] = useState<string>("");
   const [automationDelay] = useState<number>(1500);
   const [arraysOfMultiply, setArraysOfMultiply] = useState<string[][]>([]);
   const [resultOfMultiply, setResultOfMultiply] = useState<string>("");
@@ -63,8 +70,16 @@ function ArithmeticOperationsPage(): ReactElement {
   const [secondValueInAddictionCode, setSecondValueInAddictionCode] =
     useState<string>("");
   const [addingUnit, setAddingUnit] = useState<string>("");
-  const { isFullHd, isSmallDisplay, isNotFullHd, isTwoK, isTablet, isMobile } =
-    useMatchMedia();
+  const {
+    isFullHd,
+    isSmallDisplay,
+    isNotFullHd,
+    isTwoK,
+    isTablet,
+    isMobile,
+    isSmallMobile,
+    isUnder324px,
+  } = useMatchMedia();
   const [accuracyOptions] = useState<IAccurancyOption[]>([
     {
       title: 1,
@@ -170,7 +185,7 @@ function ArithmeticOperationsPage(): ReactElement {
 
   useEffect(() => {
     if (isAutomate) {
-      if (Object.keys(theory).length + 1 !== globalStep) {
+      if (Object.keys(theory).length !== globalStep) {
         setTimeout(() => startAll(), automationDelay);
       } else {
         setAutomate();
@@ -183,6 +198,12 @@ function ArithmeticOperationsPage(): ReactElement {
       startAll();
     }
   }, [isAutomate]);
+
+  useEffect(() => {
+    if (prevSection) {
+      highlightSection(false, prevSection);
+    }
+  }, [theme]);
 
   useEffect(() => {
     if (isTimerOfSumEnd) {
@@ -225,7 +246,7 @@ function ArithmeticOperationsPage(): ReactElement {
   function resetEnteredData() {
     setFirstValue("");
     setSecondValue("");
-    setSelectedAccuracy("");
+    setSelectedAccuracy(null);
   }
 
   function resetStates() {
@@ -243,6 +264,7 @@ function ArithmeticOperationsPage(): ReactElement {
     setSecondValueInAddictionCode("");
     setFirstValueInReverseCode("");
     setSecondValueInReverseCode("");
+    setPrevSection("");
   }
 
   function resetTextInHTMLElements() {
@@ -277,6 +299,12 @@ function ArithmeticOperationsPage(): ReactElement {
     if (field) {
       field.style.color = color;
     }
+
+    setTimeout(() => {
+      if (field) {
+        (field as HTMLElement).style.color = "";
+      }
+    }, 500);
   }
 
   function multiplyNumbers() {
@@ -340,7 +368,7 @@ function ArithmeticOperationsPage(): ReactElement {
 
     setResultOfMultiply(sum.join(""));
 
-    if (Number(firstValue) * Number(secondValue) >= 0) {
+    if (Number(firstValue) >= 0 && Number(secondValue) >= 0) {
       setAmountInBinSystem(sum.join(""));
     } else {
       setAmountInAddingCode(sum.join(""));
@@ -462,8 +490,14 @@ function ArithmeticOperationsPage(): ReactElement {
       }
 
       displayFunc(sumId, sum);
-      colorizeFunc(index + tempaleIdForEachDigitOfFirstValue, "black");
-      colorizeFunc(index + tempaleIdForEachDigitOfSecondValue, "black");
+      colorizeFunc(
+        index + tempaleIdForEachDigitOfFirstValue,
+        theme === Theme.Light ? "black" : "white",
+      );
+      colorizeFunc(
+        index + tempaleIdForEachDigitOfSecondValue,
+        theme === Theme.Light ? "black" : "white",
+      );
 
       index--;
       digitOfFirstValue = firstValue[index];
@@ -848,6 +882,20 @@ function ArithmeticOperationsPage(): ReactElement {
     );
   }
 
+  function highlightSection(turnOff: boolean = false, id: string) {
+    if (turnOff) {
+      (document.getElementById(id) as HTMLElement).style.backgroundColor = "";
+    } else {
+      if (theme === Theme.Light) {
+        (document.getElementById(id) as HTMLElement).style.backgroundColor =
+          "yellow";
+      } else {
+        (document.getElementById(id) as HTMLElement).style.backgroundColor =
+          "green";
+      }
+    }
+  }
+
   function startAdding() {
     addingNumbers(
       "digitOfFirstValue",
@@ -886,25 +934,38 @@ function ArithmeticOperationsPage(): ReactElement {
         true;
     }
     let step = globalStep;
+    if (prevSection) {
+      highlightSection(true, prevSection);
+    }
     if (step === 0) {
       showSection(sectionsId.wholePartSection, "flex");
       setText(theory.convertWholePartToBin);
+      highlightSection(false, sectionsId.wholePartSection);
+      setPrevSection(sectionsId.wholePartSection);
       startWholeParts();
     } else if (step === 1) {
       showSection(sectionsId.floatPartSection, "flex");
       setText(theory.convertFloatPartToBin);
+      highlightSection(false, sectionsId.floatPartSection);
+      setPrevSection(sectionsId.floatPartSection);
       startFloatParts();
     } else if (step === 2) {
       showSection(sectionsId.numberToBinSection, "flex");
       setText(theory.concatWholeAndFloatPartsOfBin);
+      highlightSection(false, sectionsId.numberToBinSection);
+      setPrevSection(sectionsId.numberToBinSection);
       enableNextStepBttnAndIncreaseStep();
     } else if (step === 3) {
       showSection(sectionsId.toMachineRepresSection, "flex");
       setText(theory.machineRepres);
+      highlightSection(false, sectionsId.toMachineRepresSection);
+      setPrevSection(sectionsId.toMachineRepresSection);
       startMachineRepresentation();
     } else if (step === 4) {
       showSection(sectionsId.equalizingMantissaSection, "flex");
       setText(theory.mantissa);
+      highlightSection(false, sectionsId.equalizingMantissaSection);
+      setPrevSection(sectionsId.equalizingMantissaSection);
       startEqualizingMantissa();
     } else if (step === 5) {
       if (Number(firstValue) >= 0 && Number(secondValue) >= 0) {
@@ -915,13 +976,17 @@ function ArithmeticOperationsPage(): ReactElement {
           return;
         }
       } else {
-        showSection(sectionsId.toReverseCodeSection);
+        showSection(sectionsId.toReverseCodeSection, "flex");
         setText(theory.convertToReverseCode);
+        highlightSection(false, sectionsId.toReverseCodeSection);
+        setPrevSection(sectionsId.toReverseCodeSection);
         startConvertToReverseCode();
       }
     } else if (step === 6) {
       showSection(sectionsId.toAddictionCodeSection);
       setText(theory.convertToAddingCode);
+      highlightSection(false, sectionsId.toAddictionCodeSection);
+      setPrevSection(sectionsId.toAddictionCodeSection);
       startConvertToAddictionCode();
     }
 
@@ -929,12 +994,16 @@ function ArithmeticOperationsPage(): ReactElement {
       if (searchParams.get("type") === addingNumbersPath.path) {
         showSection(sectionsId.additionSection);
         setText(theory.adding);
+        highlightSection(false, sectionsId.additionSection);
+        setPrevSection(sectionsId.additionSection);
         startAdding();
       } else if (
         searchParams.get("type") === multiplicationOfNumbersPath.path
       ) {
         showSection(sectionsId.resultOfMultiplication, "flex");
         setText(theory.multiply);
+        highlightSection(false, sectionsId.resultOfMultiplication);
+        setPrevSection(sectionsId.resultOfMultiplication);
         multiplyNumbers();
       }
     } else if (step === 8) {
@@ -947,14 +1016,16 @@ function ArithmeticOperationsPage(): ReactElement {
             return;
           }
         } else {
-          showSection(sectionsId.toReverseCodeAmount);
+          showSection(sectionsId.toReverseCodeAmount, "flex");
           setText(theory.convertAmountToReverseCode);
+          highlightSection(false, sectionsId.toReverseCodeAmount);
+          setPrevSection(sectionsId.toReverseCodeAmount);
           startConvertToReverseAmount();
         }
       } else if (
         searchParams.get("type") === multiplicationOfNumbersPath.path
       ) {
-        if (Number(firstValue) * Number(secondValue) >= 0) {
+        if (Number(firstValue) >= 0 && Number(secondValue) >= 0) {
           step = 10;
           setGlobalStep(10);
 
@@ -962,27 +1033,37 @@ function ArithmeticOperationsPage(): ReactElement {
             return;
           }
         } else {
-          showSection(sectionsId.toReverseCodeAmount);
+          showSection(sectionsId.toReverseCodeAmount, "flex");
           setText(theory.convertAmountToReverseCode);
+          highlightSection(false, sectionsId.toReverseCodeAmount);
+          setPrevSection(sectionsId.toReverseCodeAmount);
           startConvertToReverseAmount();
         }
       }
     } else if (step === 9) {
       showSection(sectionsId.toStraightCodeAmount);
       setText(theory.convertAmountToStraightCode);
+      highlightSection(false, sectionsId.toStraightCodeAmount);
+      setPrevSection(sectionsId.toStraightCodeAmount);
       startConvertAmountToStraightCode();
     }
 
     if (step === 10) {
       showSection(sectionsId.fromMachineToBinSection, "flex");
       setText(theory.fromMachineToBin);
+      highlightSection(false, sectionsId.fromMachineToBinSection);
+      setPrevSection(sectionsId.fromMachineToBinSection);
       startFromMachineToBin();
     } else if (step === 11) {
       showSection(sectionsId.convertWholePartOfAmountSection, "flex");
       startConvertToDecWholePart();
+      highlightSection(false, sectionsId.convertWholePartOfAmountSection);
+      setPrevSection(sectionsId.convertWholePartOfAmountSection);
     } else if (step === 12) {
       showSection(sectionsId.convertFloatPartOfAmountSection, "flex");
       startConvertToDecFloatPart();
+      highlightSection(false, sectionsId.convertFloatPartOfAmountSection);
+      setPrevSection(sectionsId.convertFloatPartOfAmountSection);
     } else if (step === 13) {
       showResult();
     }
@@ -1016,7 +1097,7 @@ function ArithmeticOperationsPage(): ReactElement {
 
   function showResult() {
     setTimeout(() => {
-      showSection(sectionsId.resultSection);
+      showSection(sectionsId.resultSection, "flex");
       (document.getElementById("innerContainer") as HTMLElement).scrollTo(
         0,
         (document.getElementById("innerContainer") as HTMLElement).scrollHeight,
@@ -1180,9 +1261,9 @@ function ArithmeticOperationsPage(): ReactElement {
   function defineButtonSize(): ButtonSizes | undefined {
     if (isTwoK || isFullHd) {
       return ButtonSizes.Big;
-    } else if (isTablet || isSmallDisplay || isNotFullHd) {
+    } else if (isSmallDisplay || isNotFullHd) {
       return ButtonSizes.Medium;
-    } else if (isMobile) {
+    } else if (isTablet || isMobile || isUnder324px || isSmallMobile) {
       return ButtonSizes.Small;
     }
   }
@@ -1210,8 +1291,16 @@ function ArithmeticOperationsPage(): ReactElement {
     <div className={styles.outer_container}>
       {showTableOfMultiply && (
         <WindowForMultiply
-          firstValue={machineFirstValue.split(".").join("")}
-          secondValue={machineSecondValue.split(".").join("")}
+          firstValue={
+            Number(firstValue) >= 0
+              ? machineFirstValue.split(".").join("")
+              : firstValueInAddictionCode.split(".").join("")
+          }
+          secondValue={
+            Number(secondValue) >= 0
+              ? machineSecondValue.split(".").join("")
+              : secondValueInAddictionCode.split(".").join("")
+          }
           stepsOfMultiply={arraysOfMultiply}
           closeModalFunc={showOrHideMultiplyTable}
           resultOfMultiply={resultOfMultiply.split(".").join("")}
@@ -1231,19 +1320,31 @@ function ArithmeticOperationsPage(): ReactElement {
             </>
           }
         />
-        <div id={sectionsId.wholePartSection} className={styles.row_container}>
+        <div
+          id={sectionsId.wholePartSection}
+          className={classNames(
+            styles.row_container,
+            theme === Theme.Light
+              ? styles.light_row_container
+              : styles.dark_row_container,
+          )}
+        >
           <div className={styles.row_three_col}>
             <div className={styles.step_title}>Преобразование целой части</div>
             <div>
-              Целая часть:{" "}
-              <span id={inputFieldsId.wholePartFirst}>
-                {Math.trunc(firstValue as number)}
+              Целая часть:
+              <span className={styles.formula_container}>
+                <span id={inputFieldsId.wholePartFirst}>
+                  {Math.trunc(firstValue as number)}
+                </span>
               </span>
             </div>
             <div>
-              Целая часть:{" "}
-              <span id={inputFieldsId.wholePartSecond}>
-                {Math.trunc(secondValue as number)}
+              Целая часть:
+              <span className={styles.formula_container}>
+                <span id={inputFieldsId.wholePartSecond}>
+                  {Math.trunc(secondValue as number)}
+                </span>
               </span>
             </div>
           </div>
@@ -1253,21 +1354,33 @@ function ArithmeticOperationsPage(): ReactElement {
             <div id={inputFieldsId.wholePartSecondToBin}></div>
           </div>
         </div>
-        <div id={sectionsId.floatPartSection} className={styles.row_container}>
+        <div
+          id={sectionsId.floatPartSection}
+          className={classNames(
+            styles.row_container,
+            theme === Theme.Light
+              ? styles.light_row_container
+              : styles.dark_row_container,
+          )}
+        >
           <div className={styles.row_three_col}>
             <div className={styles.step_title}>
               Преобразование дробной части
             </div>
             <div>
               Дробная часть:{" "}
-              <span id={inputFieldsId.floatPartFirst}>
-                {(firstValue as number) - Math.trunc(firstValue as number)}
+              <span className={styles.formula_container}>
+                <span id={inputFieldsId.floatPartFirst}>
+                  {(firstValue as number) - Math.trunc(firstValue as number)}
+                </span>
               </span>
             </div>
             <div>
               Дробная часть:{" "}
-              <span id={inputFieldsId.floatPartSecond}>
-                {(secondValue as number) - Math.trunc(secondValue as number)}
+              <span className={styles.formula_container}>
+                <span id={inputFieldsId.floatPartSecond}>
+                  {(secondValue as number) - Math.trunc(secondValue as number)}
+                </span>
               </span>
             </div>
           </div>
@@ -1340,17 +1453,26 @@ function ArithmeticOperationsPage(): ReactElement {
         ) : null}
         <div
           id={sectionsId.resultOfMultiplication}
-          className={styles.row_container}
+          className={classNames(
+            styles.row_container,
+            theme === Theme.Light
+              ? styles.light_row_container
+              : styles.dark_row_container,
+          )}
         >
           <div className={styles.row_three_col}>
             <div className={styles.step_title}>Результат умножения</div>
-            <div>{resultOfMultiply}</div>
+            <div className={styles.multi_result}>{resultOfMultiply}</div>
             <div>
-              <Button
-                onClickFunction={showOrHideMultiplyTable}
-                text="Показать таблицу умножения"
-                size={ButtonSizes.Big}
-              />
+              {isUnder324px || isSmallMobile || isMobile ? (
+                <FaTable size={32} onClick={showOrHideMultiplyTable} />
+              ) : (
+                <Button
+                  onClickFunction={showOrHideMultiplyTable}
+                  text="Показать таблицу умножения"
+                  size={defineButtonSize()}
+                />
+              )}
             </div>
           </div>
         </div>
@@ -1378,35 +1500,35 @@ function ArithmeticOperationsPage(): ReactElement {
           currentDigitOfSecondValueId={inputFieldsId.currentDigitSecondValue}
           isSecondValueNegative={false}
         />
-        {Number(firstValue) + Number(secondValue) < 0 ||
-          (Number(firstValue) * Number(secondValue) < 0 && (
-            <>
-              <GridRowContainer
-                sectionId={sectionsId.toReverseCodeAmount}
-                sectionTitle="Перевод суммы в обратный код"
-                idOfFirstField={inputFieldsId.convertedAmountInReverseCode}
-              />
-              <SumField
-                firstValue={amountInReverseCode}
-                secondValue=""
-                sumId=""
-                addingUnit={addingUnit}
-                sectionId={sectionsId.toStraightCodeAmount}
-                sectionTitle="Перевод суммы в прямой код"
-                templateForEachDigitsOfFirstValue={
-                  inputFieldsId.templateForEachDigitOfStraightCodeAmountValue
-                }
-                templateForEachDigitsOfSecondValue=""
-                addingUnitIdOfFirstValue={
-                  inputFieldsId.templateForEachDigitOfStraightCodeSecondValue
-                }
-                resultIdOfFirstAdding={
-                  inputFieldsId.convertedAmountInStraightCode
-                }
-                isSecondValueNegative={false}
-              />
-            </>
-          ))}
+        {(Number(firstValue) + Number(secondValue) < 0 ||
+          Number(firstValue) * Number(secondValue) < 0) && (
+          <>
+            <GridRowContainer
+              sectionId={sectionsId.toReverseCodeAmount}
+              sectionTitle="Перевод суммы в обратный код"
+              idOfFirstField={inputFieldsId.convertedAmountInReverseCode}
+            />
+            <SumField
+              firstValue={amountInReverseCode}
+              secondValue=""
+              sumId=""
+              addingUnit={addingUnit}
+              sectionId={sectionsId.toStraightCodeAmount}
+              sectionTitle="Перевод суммы в прямой код"
+              templateForEachDigitsOfFirstValue={
+                inputFieldsId.templateForEachDigitOfStraightCodeAmountValue
+              }
+              templateForEachDigitsOfSecondValue=""
+              addingUnitIdOfFirstValue={
+                inputFieldsId.templateForEachDigitOfStraightCodeSecondValue
+              }
+              resultIdOfFirstAdding={
+                inputFieldsId.convertedAmountInStraightCode
+              }
+              isSecondValueNegative={false}
+            />
+          </>
+        )}
         <GridRowContainer
           sectionId={sectionsId.fromMachineToBinSection}
           sectionTitle=" Преобразование числа из машинного представления в двоичную систему"
@@ -1414,7 +1536,12 @@ function ArithmeticOperationsPage(): ReactElement {
         />
         <div
           id={sectionsId.convertWholePartOfAmountSection}
-          className={styles.row_container}
+          className={classNames(
+            styles.row_container,
+            theme === Theme.Light
+              ? styles.light_row_container
+              : styles.dark_row_container,
+          )}
         >
           <div className={styles.row_two_col}>
             <div className={styles.step_title}>
@@ -1424,22 +1551,31 @@ function ArithmeticOperationsPage(): ReactElement {
           </div>
           <div className={styles.row_two_col}>
             <div className={styles.step_title}>Формула</div>
-            <div
-              id={inputFieldsId.formulaOfWholePart}
-              className={styles.formula}
-            ></div>
+            <div className={styles.formula_container}>
+              <div
+                id={inputFieldsId.formulaOfWholePart}
+                className={styles.formula}
+              ></div>
+            </div>
           </div>
           <div className={styles.row_two_col}>
             <div className={styles.step_title}>Результат</div>
-            <div
-              id={inputFieldsId.convertedToDecWholePart}
-              className={styles.formula}
-            ></div>
+            <div className={styles.formula_container}>
+              <div
+                id={inputFieldsId.convertedToDecWholePart}
+                className={styles.formula}
+              ></div>
+            </div>
           </div>
         </div>
         <div
           id={sectionsId.convertFloatPartOfAmountSection}
-          className={styles.row_container}
+          className={classNames(
+            styles.row_container,
+            theme === Theme.Light
+              ? styles.light_row_container
+              : styles.dark_row_container,
+          )}
         >
           <div className={styles.row_two_col}>
             <div className={styles.step_title}>
@@ -1449,50 +1585,66 @@ function ArithmeticOperationsPage(): ReactElement {
           </div>
           <div className={styles.row_two_col}>
             <div className={styles.step_title}>Формула</div>
-            <div
-              id={inputFieldsId.formulaOfFloatPart}
-              className={styles.formula}
-            ></div>
+            <div className={styles.formula_container}>
+              <div
+                id={inputFieldsId.formulaOfFloatPart}
+                className={styles.formula}
+              ></div>
+            </div>
           </div>
           <div className={styles.row_two_col}>
             <div className={styles.step_title}>Результат</div>
-            <div
-              id={inputFieldsId.convertedToDecFloatPart}
-              className={styles.formula}
-            ></div>
+            <div className={styles.formula_container}>
+              <div
+                id={inputFieldsId.convertedToDecFloatPart}
+                className={styles.formula}
+              ></div>
+            </div>
           </div>
         </div>
       </div>
-      <div className={styles.info_container}>
+      <div
+        className={classNames(
+          styles.info_container,
+          theme === Theme.Light
+            ? styles.light_info_container
+            : styles.dark_info_container,
+        )}
+      >
         <div id={sectionsId.resultSection} className={styles.result_container}>
-          <div className={styles.resultSection}>
-            <p>
-              Результатом{" "}
-              {searchParams.get("type") === addingNumbersPath.path
-                ? "сложение"
-                : "умножения"}{" "}
-              чисел <b>{firstValue}</b> и <b>{secondValue}</b> с точностью{" "}
-              <b>{selectedAccuracy}</b> является число{" "}
-              <b>
-                {amountInAddingCode ? -amountInDecSystem : amountInDecSystem}
-              </b>
-            </p>
-          </div>
+          <p>
+            Результатом{" "}
+            {searchParams.get("type") === addingNumbersPath.path
+              ? "сложение"
+              : "умножения"}{" "}
+            чисел <b>{firstValue}</b> и <b>{secondValue}</b> с точностью{" "}
+            <b>{selectedAccuracy}</b> является число{" "}
+            <b>{amountInAddingCode ? -amountInDecSystem : amountInDecSystem}</b>
+          </p>
         </div>
-        <div className={styles.text_container}>{text}</div>
+        <div
+          className={styles.text_container}
+          style={
+            text
+              ? theme === Theme.Light
+                ? { backgroundColor: "yellow" }
+                : { backgroundColor: "green" }
+              : {}
+          }
+        >
+          {text}
+        </div>
         <div className={styles.buttons_container}>
           <Button
             text={
-              Object.keys(theory).length + 1 === globalStep
+              Object.keys(theory).length === globalStep
                 ? "Повторить"
                 : "Следующий этап"
             }
             size={defineButtonSize()}
             id="nextStepBttn"
             onClickFunction={
-              Object.keys(theory).length + 1 === globalStep
-                ? resetAll
-                : startAll
+              Object.keys(theory).length === globalStep ? resetAll : startAll
             }
             disabled={isAutomate}
           />
@@ -1502,7 +1654,7 @@ function ArithmeticOperationsPage(): ReactElement {
             }
             size={defineButtonSize()}
             onClickFunction={setAutomate}
-            disabled={Object.keys(theory).length + 1 === globalStep}
+            disabled={Object.keys(theory).length === globalStep}
           />
           <Button
             text="Ввести данные заново"
